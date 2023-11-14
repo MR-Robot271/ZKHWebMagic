@@ -39,7 +39,7 @@ public class ZKHProcessor implements PageProcessor {
         // 存储结果
         List<Product> productList=new ArrayList<>();
         // 获取相应的内容 产品名 价格 图片
-        List<String> products = page.getHtml().xpath("//*[@id=\"app\"]/div/div/div[5]/div[6]/div/div").all();
+        List<String> products = page.getHtml().css("#app>div.content>div.catalog-wrap>div.list-inner>div>div.goods-item-box-new>div.goods-item-wrap-new").all();
         // 滑动后刷新的数据
         List<String> productsInfinite = page.getHtml().css("#app>div.content>div.catalog-wrap>div.list-inner>div.infiniteScroll>div.goods-wrap>div>div.goods-item-box-new>div.goods-item-wrap-new").all();
         if (productsInfinite.size()>0) {

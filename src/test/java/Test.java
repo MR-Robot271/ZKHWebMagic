@@ -15,7 +15,7 @@ public class Test {
         String searchName="绿联（UGREEN）六类RJ45水晶头镀金 50248 100个装";
 
         // 获取网页地址
-        String keywordPath="D:\\feishuDownloads\\10.26.xls";
+        String keywordPath="D:\\feishuDownloads\\test1.xlsx";
         List<Keyword> keywords = FileUtils.getKeywords(keywordPath);
         List<String> urls = new ArrayList<>();
         for (Keyword keyword:keywords){
@@ -33,6 +33,7 @@ public class Test {
         ZKHDownloader zkhDownloader = new ZKHDownloader();
         Spider spider = Spider.create(new ZKHProcessor())
                 .addUrl(strings)
+//                .addUrl("https://www.zkh.com/search.html?keywords=绿联(UGREEN)六类RJ45水晶头镀金 50248 100个装")
 //                .addPipeline(new ConsolePipeline())
                 .setDownloader(zkhDownloader)
                 .addPipeline(new ExcelPipeline())
