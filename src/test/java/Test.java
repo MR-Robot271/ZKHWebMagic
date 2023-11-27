@@ -15,7 +15,7 @@ public class Test {
         String searchName="绿联（UGREEN）六类RJ45水晶头镀金 50248 100个装";
 
         // 获取网页地址
-        String keywordPath="D:\\feishuDownloads\\test1.xlsx";
+        String keywordPath="D:\\feishuDownloads\\test3.xlsx";
         List<Keyword> keywords = FileUtils.getKeywords(keywordPath);
         List<String> urls = new ArrayList<>();
         for (Keyword keyword:keywords){

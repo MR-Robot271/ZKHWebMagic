@@ -2,6 +2,7 @@ package com.kb.pipeline;
 
 import com.kb.pojo.Product;
 import com.kb.pojo.ProductExcel;
+import com.kb.pojo.ResultExcel;
 import com.kb.utils.FileUtils;
 import us.codecraft.webmagic.ResultItems;
 import us.codecraft.webmagic.Task;
@@ -72,16 +73,44 @@ public class ExcelPipeline implements Pipeline {
                     productExcelList.add(productExcel);
                 }
             }
-            // 以追加写入的方式，写入excel文件
-            FileUtils.excelAppend(productExcelList, path, pathOfTemp);
+
+            // 更新excel表格结构，以追加写入的方式，写入excel文件
+            String projectName = productExcelList.get(0).getProjectName();
+            ResultExcel resultExcel;
+            List<Float> prices = new ArrayList<Float>();
+            for (int i = 0; i < productExcelList.size(); i++) {
+                prices.add(productExcelList.get(i).getProjectPrice());
+            }
+            // 根据得到的数据量动态生成ResultExcel
+            if (prices.size() == 1) {
+                resultExcel=new ResultExcel(projectName, prices.get(0));
+            }else if (prices.size() == 2){
+                float max = Math.max(prices.get(0), prices.get(1));
+                float min = Math.min(prices.get(0), prices.get(1));
+                float avg=(prices.get(0)+prices.get(1))/2.0f;
+                resultExcel=new ResultExcel(projectName, prices.get(0), prices.get(1));
+                resultExcel.setMaxPrice(max);
+                resultExcel.setMinPrice(min);
+                resultExcel.setAvgPrice(avg);
+            }else if(prices.size() == 3){
+                float max = Math.max(prices.get(2), Math.max(prices.get(0), prices.get(1)));
+                float min = Math.min(prices.get(2), Math.min(prices.get(0), prices.get(1)));
+                float avg=(prices.get(0)+prices.get(1)+prices.get(2))/3.0f;
+                resultExcel=new ResultExcel(projectName, prices.get(0), prices.get(1), prices.get(2), max, min, avg);
+            }else{
+                resultExcel=new ResultExcel(projectName);
+            }
+            ArrayList<ResultExcel> resultExcels = new ArrayList<>();
+            resultExcels.add(resultExcel);
+            FileUtils.resultExcelAppend(resultExcels, path, pathOfTemp);
         }
         // 无结果时 结果为String 此时实例化一个新的ProductExcel
         else if (resultItems.get("productList") instanceof String){
-            Float noResultPrice=-1.0f;
-            ProductExcel productExcel = new ProductExcel(new Date(), new Date(), resultItems.get("productList"), noResultPrice, "");
-            productExcelList.add(productExcel);
-            // 以追加写入的方式，写入excel文件
-            FileUtils.excelAppend(productExcelList, path, pathOfTemp);
+            // 更新excel表格结构，以追加写入的方式，写入excel文件
+            ResultExcel resultExcel = new ResultExcel(resultItems.get("productList"));
+            ArrayList<ResultExcel> resultExcels = new ArrayList<>();
+            resultExcels.add(resultExcel);
+            FileUtils.resultExcelAppend(resultExcels, path, pathOfTemp);
         }
         // 以上情况都不是
         else{
