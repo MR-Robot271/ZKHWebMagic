@@ -8,6 +8,7 @@ import us.codecraft.webmagic.ResultItems;
 import us.codecraft.webmagic.Task;
 import us.codecraft.webmagic.pipeline.Pipeline;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -53,6 +54,15 @@ public class ExcelPipeline implements Pipeline {
     */
     private static void writeToExcel(ResultItems resultItems, List<ProductExcel> productExcelList, String path, String pathOfTemp) {
         List<Product> productList;
+
+        // 用于判断文件夹是否存在的临时文件
+        File tmpFile = new File(path);
+        // 判断文件夹是否存在
+        if (!tmpFile.getParentFile().exists()){
+            // 不存在则创建文件夹
+            tmpFile.getParentFile().mkdirs();
+        }
+
         // 爬虫有结果时 结果为List
         if(resultItems.get("productList") instanceof List){
             productList = resultItems.get("productList");
