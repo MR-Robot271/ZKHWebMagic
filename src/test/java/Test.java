@@ -4,6 +4,8 @@ import com.kb.pojo.Keyword;
 import com.kb.processor.ZKHProcessor;
 import com.kb.utils.FileUtils;
 import us.codecraft.webmagic.Spider;
+import us.codecraft.webmagic.proxy.Proxy;
+import us.codecraft.webmagic.proxy.SimpleProxyProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +17,7 @@ public class Test {
         String searchName="绿联（UGREEN）六类RJ45水晶头镀金 50248 100个装";
 
         // 获取网页地址
-        String keywordPath="D:\\feishuDownloads\\test3.xlsx";
+        String keywordPath="D:\\feishuDownloads\\test5.xlsx";
         List<Keyword> keywords = FileUtils.getKeywords(keywordPath);
         List<String> urls = new ArrayList<>();
         for (Keyword keyword:keywords){
@@ -31,6 +33,7 @@ public class Test {
 
 
         ZKHDownloader zkhDownloader = new ZKHDownloader();
+        zkhDownloader.setProxyProvider(SimpleProxyProvider.from(new Proxy("123.96.128.112", 21446)));
         Spider spider = Spider.create(new ZKHProcessor())
                 .addUrl(strings)
 //                .addUrl("https://www.zkh.com/search.html?keywords=绿联(UGREEN)六类RJ45水晶头镀金 50248 100个装")

@@ -12,9 +12,14 @@ import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.Task;
 import us.codecraft.webmagic.downloader.Downloader;
+import us.codecraft.webmagic.downloader.HttpClientDownloader;
 import us.codecraft.webmagic.selector.PlainText;
 
-public class ZKHDownloader implements Downloader {
+/**
+ * @Description: 用selenium实现网页下载，继承HttpClientDownloader，实现IP代理
+ * @Date: 2023/11/28
+ */
+public class ZKHDownloader extends HttpClientDownloader implements Downloader {
     private RemoteWebDriver webDriver;
 
     public ZKHDownloader(){
@@ -23,7 +28,7 @@ public class ZKHDownloader implements Downloader {
 
         ChromeOptions option = new ChromeOptions();
         // 设置无头浏览器
-        //option.setHeadless(true);
+        option.setHeadless(true);
 //        option.setExperimentalOption("debuggerAddress", "127.0.0.1:9222");
         option.addArguments("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36");
 
